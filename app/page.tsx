@@ -4,7 +4,9 @@ import { getTotalExpenses, getTotalIncome } from "@/lib/analytics";
 import { getMonthlyTotals, getCategoryBreakdown } from "@/lib/analytics";
 
 import { MonthlyChart } from "@/components/charts/monthly-chart";
+
 import { CategoryChart } from "@/components/charts/category-chart";
+import { CategoryTable } from "@/components/dashboard/category-table";
 
 export default async function HomePage() {
   const transactions = await getTransactions();
@@ -46,6 +48,12 @@ export default async function HomePage() {
 
           <CategoryChart data={categoryData} />
         </div>
+      </div>
+
+      <div className="mt-8 border border-white/10 rounded-2xl p-6">
+        <h2 className="text-xl mb-6">Spending By Category</h2>
+
+        <CategoryTable data={categoryData} />
       </div>
     </main>
   );

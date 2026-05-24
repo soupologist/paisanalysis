@@ -59,3 +59,36 @@ export function getCategoryBreakdown(transactions: Transaction[]) {
     }))
     .sort((a, b) => b.amount - a.amount);
 }
+
+export function getAvailableMonths(transactions: Transaction[]) {
+  const months = new Set<string>();
+
+  transactions.forEach((tx) => {
+    const date = new Date(tx.finalDate);
+
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0",
+    )}`;
+
+    months.add(key);
+  });
+
+  return Array.from(months).sort().reverse();
+}
+
+export function filterTransactionsByMonth(
+  transactions: Transaction[],
+  month: string,
+) {
+  return transactions.filter((tx) => {
+    const date = new Date(tx.finalDate);
+
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0",
+    )}`;
+
+    return key === month;
+  });
+}
