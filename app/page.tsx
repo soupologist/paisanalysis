@@ -7,6 +7,7 @@ import { MonthlyChart } from "@/components/charts/monthly-chart";
 
 import { CategoryChart } from "@/components/charts/category-chart";
 import { CategoryTable } from "@/components/dashboard/category-table";
+import { formatCurrency } from "@/lib/format";
 
 export default async function HomePage() {
   const transactions = await getTransactions();
@@ -26,13 +27,13 @@ export default async function HomePage() {
         <div className="border border-white/10 p-6 rounded-2xl">
           <p className="text-sm text-white/50">Total Expenses</p>
 
-          <h2 className="text-3xl mt-2">₹{expenses.toLocaleString()}</h2>
+          <h2 className="text-3xl mt-2">{formatCurrency(expenses)}</h2>
         </div>
 
         <div className="border border-white/10 p-6 rounded-2xl">
           <p className="text-sm text-white/50">Total Income</p>
 
-          <h2 className="text-3xl mt-2">₹{income.toLocaleString()}</h2>
+          <h2 className="text-3xl mt-2">{formatCurrency(income)}</h2>
         </div>
       </div>
 

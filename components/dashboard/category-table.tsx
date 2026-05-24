@@ -1,3 +1,5 @@
+import { formatCurrency } from "@/lib/format";
+
 type CategoryData = {
   category: string;
   amount: number;
@@ -28,7 +30,7 @@ export function CategoryTable({ data }: { data: CategoryData[] }) {
                 <td className="px-4 py-3">{item.category}</td>
 
                 <td className="px-4 py-3 text-right">
-                  ₹{item.amount.toLocaleString()}
+                  {formatCurrency(item.amount)}
                 </td>
 
                 <td className="px-4 py-3 text-right text-white/60">

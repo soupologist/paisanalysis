@@ -1,18 +1,25 @@
 "use client";
 
-import { ResponsiveContainer, PieChart, Pie, Tooltip, Cell } from "recharts";
+import { Pie, PieChart } from "recharts";
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
+const chartConfig = {
+  amount: {
+    label: "Amount",
+  },
+};
 
 const COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#FFE66D",
-  "#5DA9E9",
-  "#C77DFF",
-  "#F4A261",
-  "#2A9D8F",
-  "#E76F51",
-  "#90BE6D",
-  "#577590",
+  "hsl(var(--chart-1))",
+  "hsl(var(--chart-2))",
+  "hsl(var(--chart-3))",
+  "hsl(var(--chart-4))",
+  "hsl(var(--chart-5))",
 ];
 
 export function CategoryChart({
@@ -23,37 +30,19 @@ export function CategoryChart({
     amount: number;
   }[];
 }) {
-  return (
-    <div className="h-[400px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="amount"
-            nameKey="category"
-            outerRadius={140}
-            label={false}
-          >
-            {data.map((_, index) => (
-              <Cell key={index} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
+  const chartData = data.map((item, index) => ({
+    ...item,
+    fill: COLORS[index % COLORS.length],
+  }));
 
-          <Tooltip
-            formatter={(value: number) => [
-              `₹${value.toLocaleString()}`,
-              "Spent",
-            ]}
-            labelFormatter={(label) => label}
-            contentStyle={{
-              backgroundColor: "#111",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "12px",
-              color: "white",
-            }}
-          />
+  return (
+    <div className="w-full h-100">
+      <ChartContainer config={chartConfig} className="w-full h-full">
+        <PieChart>
+          <ChartTooltip content={<ChartTooltipContent nameKey="category" />} />
+          <Pie data={chartData} dataKey="amount" nameKey="category" />
         </PieChart>
-      </ResponsiveContainer>
+      </ChartContainer>
     </div>
   );
 }
