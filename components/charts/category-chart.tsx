@@ -1,26 +1,6 @@
 "use client";
 
-import { Pie, PieChart } from "recharts";
-
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
-const chartConfig = {
-  amount: {
-    label: "Amount",
-  },
-};
-
-const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-];
+import { formatCurrency } from "@/lib/format";
 
 export function CategoryChart({
   data,
@@ -30,19 +10,44 @@ export function CategoryChart({
     amount: number;
   }[];
 }) {
-  const chartData = data.map((item, index) => ({
-    ...item,
-    fill: COLORS[index % COLORS.length],
-  }));
+  const max = Math.max(...data.map((d) => d.amount));
 
   return (
-    <div className="w-full h-100">
-      <ChartContainer config={chartConfig} className="w-full h-full">
-        <PieChart>
-          <ChartTooltip content={<ChartTooltipContent nameKey="category" />} />
-          <Pie data={chartData} dataKey="amount" nameKey="category" />
-        </PieChart>
-      </ChartContainer>
+    <div className="space-y-5">
+      {data.map((item) => {
+        const width = (item.amount / max) * 100;
+
+        return (
+          <div key={item.category} className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p
+                className="
+                  font-mono
+                  text-xs
+                  uppercase
+                  tracking-[0.18em]
+                  text-white/50
+                "
+              >
+                {item.category}
+              </p>
+
+              <p className="font-chakra text-sm text-[#8BFF6A]">
+                {formatCurrency(item.amount)}
+              </p>
+            </div>
+
+            <div className="h-[2px] w-full bg-white/5 overflow-hidden">
+              <div
+                className="h-full bg-[#8BFF6A]"
+                style={{
+                  width: `${width}%`,
+                }}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
